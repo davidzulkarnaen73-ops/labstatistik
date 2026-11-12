@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Statistika & Diagram - Interaktif</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdfa; /* Soft teal background */
+            color: #1e293b;
+        }
+        h1, h2, h3, .brand-font {
+            font-family: 'Fredoka', sans-serif;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .canvas-container {
+            width: 100%;
+            overflow-x: auto;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            padding: 1rem;
+        }
+        canvas {
+            min-width: 400px;
+            max-width: 100%;
+            height: auto;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800">
+
+    <!-- Navbar -->
+    <nav class="bg-teal-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-300" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                    </svg>
+                    <span class="font-bold text-xl brand-font tracking-wide">StatistikaKids</span>
+                </div>
+                <div class="hidden md:flex space-x-2">
+                    <button onclick="switchTab('materi')" id="btn-materi" class="nav-btn px-4 py-2 rounded-lg bg-teal-700 font-semibold transition hover:bg-teal-500">📖 Materi</button>
+                    <button onclick="switchTab('simulasi')" id="btn-simulasi" class="nav-btn px-4 py-2 rounded-lg hover:bg-teal-500 font-semibold transition">🎮 Simulasi</button>
+                    <button onclick="switchTab('kuis')" id="btn-kuis" class="nav-btn px-4 py-2 rounded-lg hover:bg-teal-500 font-semibold transition">✍️ Kuis</button>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <select onchange="switchTab(this.value)" class="bg-teal-700 text-white border-none rounded p-2 focus:ring-2 focus:ring-yellow-300">
+                        <option value="materi">📖 Materi</option>
+                        <option value="simulasi">🎮 Simulasi</option>
+                        <option value="kuis">✍️ Kuis</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- TAB: MATERI -->
+        <section id="tab-materi" class="tab-content active space-y-8">
+            <div class="text-center mb-10">
+                <h1 class="text-4xl font-bold text-teal-800 mb-4 brand-font">Mari Belajar Statistika!</h1>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto">Pahami konsep dasar pengolahan data, pembuatan diagram, hingga perhitungan rata-rata dengan cara yang menyenangkan.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Card 1 -->
+                <div class="glass-panel p-6 rounded-2xl shadow-sm hover:shadow-md transition border-t-4 border-t-blue-500">
+                    <h3 class="text-xl font-bold text-blue-700 mb-3 flex items-center gap-2"><span>📊</span> 1. Pengumpulan Data</h3>
+                    <p class="text-sm leading-relaxed text-slate-700"><strong>Data</strong> adalah sekumpulan keterangan atau fakta. Data dapat dikumpulkan melalui wawancara, kuesioner, atau pengamatan langsung. Contoh: Data nilai ulangan matematika siswa kelas 7.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="glass-panel p-6 rounded-2xl shadow-sm hover:shadow-md transition border-t-4 border-t-indigo-500">
+                    <h3 class="text-xl font-bold text-indigo-700 mb-3 flex items-center gap-2"><span>📋</span> 2. Tabel Frekuensi</h3>
+                    <p class="text-sm leading-relaxed text-slate-700">Tabel yang digunakan untuk mengelompokkan data. <strong>Frekuensi</strong> berarti "jumlah" atau "banyaknya" suatu data muncul. Tabel ini memudahkan kita membaca data yang jumlahnya besar.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="glass-panel p-6 rounded-2xl shadow-sm hover:shadow-md transition border-t-4 border-t-green-500">
+                    <h3 class="text-xl font-bold text-green-700 mb-3 flex items-center gap-2"><span>📈</span> 3. Jenis-Jenis Diagram</h3>
+                    <ul class="text-sm space-y-2 text-slate-700">
+                        <li><strong>Diagram Batang:</strong> Berbentuk persegi panjang. Sangat cocok untuk membandingkan jumlah antar kategori.</li>
+                        <li><strong>Diagram Garis:</strong> Berupa titik-titik yang dihubungkan garis. Cocok untuk data yang berubah seiring waktu (contoh: suhu tubuh).</li>
+                        <li><strong>Diagram Lingkaran:</strong> Berbentuk kue pie. Cocok untuk melihat persentase atau proporsi bagian dari keseluruhan.</li>
+                    </ul>
+                </div>
+                <!-- Card 4 -->
+                <div class="glass-panel p-6 rounded-2xl shadow-sm hover:shadow-md transition border-t-4 border-t-amber-500">
+                    <h3 class="text-xl font-bold text-amber-700 mb-3 flex items-center gap-2"><span>🧮</span> 4. Mean, Median, Modus</h3>
+                    <ul class="text-sm space-y-2 text-slate-700">
+                        <li><strong>Mean (Rata-rata):</strong> Jumlah seluruh data dibagi banyaknya data.</li>
+                        <li><strong>Median (Nilai Tengah):</strong> Nilai di posisi paling tengah setelah data <em>diurutkan</em> dari kecil ke besar.</li>
+                        <li><strong>Modus:</strong> Nilai atau data yang <em>paling sering muncul</em> (frekuensi tertinggi).</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-8">
+                <button onclick="switchTab('simulasi')" class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105">
+                    Mulai Simulasi Interaktif 🚀
+                </button>
+            </div>
+        </section>
+
+        <!-- TAB: SIMULASI -->
+        <section id="tab-simulasi" class="tab-content">
+            <h2 class="text-3xl font-bold text-teal-800 mb-6 brand-font text-center">Laboratorium Data 🔬</h2>
+            
+            <!-- Input Section -->
+            <div class="bg-white p-6 rounded-2xl shadow-md mb-8 border border-slate-100">
+                <label for="dataInput" class="block text-sm font-semibold text-slate-700 mb-2">Masukkan Data Angka (pisahkan dengan koma):</label>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <input type="text" id="dataInput" class="flex-grow bg-slate-50 border border-slate-300 text-slate-900 text-lg rounded-xl focus:ring-teal-500 focus:border-teal-500 block w-full p-3 shadow-sm" placeholder="Contoh: 70, 80, 80, 90, 100, 70" value="7, 8, 6, 8, 9, 7, 8, 10, 6, 8">
+                    <button onclick="processData()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-xl shadow transition flex-shrink-0">
+                        Proses Data ⚡
+                    </button>
+                </div>
+                <p class="text-xs text-slate-500 mt-2">*Hanya angka yang akan diproses, teks akan diabaikan.</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="error-msg" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded mb-6" role="alert">
+                <p>Data tidak valid! Harap masukkan setidaknya satu angka.</p>
+            </div>
+
+            <!-- Results Section (Hidden initially) -->
+            <div id="results-section" class="hidden space-y-8">
+                
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-gradient-to-br from-blue-400 to-blue-600 p-6 rounded-2xl shadow-lg text-white text-center transform transition hover:scale-105">
+                        <h4 class="text-lg font-medium opacity-90">Mean (Rata-rata)</h4>
+                        <p id="res-mean" class="text-4xl font-bold mt-2">-</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-indigo-400 to-indigo-600 p-6 rounded-2xl shadow-lg text-white text-center transform transition hover:scale-105">
+                        <h4 class="text-lg font-medium opacity-90">Median (Tengah)</h4>
+                        <p id="res-median" class="text-4xl font-bold mt-2">-</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-400 to-purple-600 p-6 rounded-2xl shadow-lg text-white text-center transform transition hover:scale-105">
+                        <h4 class="text-lg font-medium opacity-90">Modus (Sering Muncul)</h4>
+                        <p id="res-modus" class="text-3xl font-bold mt-2">-</p>
+                    </div>
+                </div>
+
+                <!-- Explanation / Langkah-langkah -->
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4 border-b pb-2 brand-font">Langkah Penyelesaian 📝</h3>
+                    <div class="space-y-4 text-sm text-slate-700">
+                        <div>
+                            <span class="font-semibold text-teal-700">Data Masuk:</span>
+                            <span id="step-data" class="font-mono bg-slate-100 px-2 py-1 rounded"></span>
+                        </div>
+                        <div>
+                            <span class="font-semibold text-teal-700">Data Terurut:</span>
+                            <span id="step-sorted" class="font-mono bg-slate-100 px-2 py-1 rounded"></span>
+                        </div>
+                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-100">
+                            <strong class="text-blue-800">1. Mencari Mean (Rata-rata)</strong><br>
+                            Rumus: Jumlah seluruh data ÷ Banyak data<br>
+                            = (<span id="step-sum" class="font-mono"></span>) ÷ <span id="step-count" class="font-mono"></span><br>
+                            = <strong id="step-mean-result"></strong>
+                        </div>
+                        <div class="p-4 bg-indigo-50 rounded-lg border border-indigo-100">
+                            <strong class="text-indigo-800">2. Mencari Median (Nilai Tengah)</strong><br>
+                            Banyak data (<span id="step-count2" class="font-mono"></span>) adalah <span id="step-parity"></span>. 
+                            <span id="step-median-logic"></span><br>
+                            Median = <strong id="step-median-result"></strong>
+                        </div>
+                        <div class="p-4 bg-purple-50 rounded-lg border border-purple-100">
+                            <strong class="text-purple-800">3. Mencari Modus (Paling Sering Muncul)</strong><br>
+                            Nilai dengan frekuensi terbanyak adalah <strong id="step-modus-result"></strong> (<span id="step-modus-freq"></span> kali muncul).
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts & Table Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    
+                    <!-- Tabel Frekuensi -->
+                    <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                        <h3 class="text-xl font-bold text-slate-800 mb-4 brand-font text-center">Tabel Frekuensi</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left text-slate-600">
+                                <thead class="text-xs text-slate-700 uppercase bg-slate-100">
+                                    <tr>
+                                        <th class="px-6 py-3 rounded-tl-lg">Nilai / Data</th>
+                                        <th class="px-6 py-3">Turus (Tally)</th>
+                                        <th class="px-6 py-3 rounded-tr-lg">Frekuensi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-body">
+                                    <!-- Injected via JS -->
+                                </tbody>
+                                <tfoot class="font-bold text-slate-800 bg-slate-50">
+                                    <tr>
+                                        <td class="px-6 py-3 rounded-bl-lg" colspan="2">Total Data</td>
+                                        <td class="px-6 py-3 rounded-br-lg" id="table-total">0</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Diagram Lingkaran -->
+                    <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                        <h3 class="text-xl font-bold text-slate-800 mb-4 brand-font text-center">Diagram Lingkaran</h3>
+                        <div class="canvas-container flex flex-col md:flex-row items-center justify-center gap-4">
+                            <canvas id="pieChart" width="300" height="300" class="w-[250px] h-[250px] md:w-[300px] md:h-[300px]"></canvas>
+                            <div id="pie-legend" class="flex flex-col gap-2 text-sm max-h-[250px] overflow-y-auto"></div>
+                        </div>
+                    </div>
+
+                    <!-- Diagram Batang -->
+                    <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 lg:col-span-2">
+                        <h3 class="text-xl font-bold text-slate-800 mb-4 brand-font text-center">Diagram Batang</h3>
+                        <div class="canvas-container flex justify-center">
+                            <canvas id="barChart" width="800" height="400" style="max-width: 100%; height: auto;"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Diagram Garis -->
+                    <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 lg:col-span-2">
+                        <h3 class="text-xl font-bold text-slate-800 mb-4 brand-font text-center">Diagram Garis</h3>
+                        <div class="canvas-container flex justify-center">
+                            <canvas id="lineChart" width="800" height="400" style="max-width: 100%; height: auto;"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: KUIS -->
+        <section id="tab-kuis" class="tab-content">
+            <div id="quiz-intro" class="text-center space-y-6">
+                <h2 class="text-3xl font-bold text-teal-800 brand-font">Uji Kemampuanmu! 🏆</h2>
+                <p class="text-slate-600 max-w-xl mx-auto">Kerjakan 15 soal pilihan ganda berikut untuk mengukur pemahamanmu tentang statistika dan diagram. Nilai dan pembahasan akan muncul di akhir.</p>
+                <button onclick="startQuiz()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105 text-lg">
+                    Mulai Kuis Sekarang
+                </button>
+            </div>
+
+            <div id="quiz-container" class="hidden bg-white p-6 md:p-10 rounded-3xl shadow-xl border border-teal-100 max-w-4xl mx-auto relative">
+                <div class="flex justify-between items-center mb-6 border-b pb-4">
+                    <h3 class="font-bold text-xl text-slate-800 brand-font">Soal Kuis</h3>
+                    <span id="quiz-progress" class="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-semibold">1 / 15</span>
+                </div>
+                
+                <form id="quiz-form" onsubmit="submitQuiz(event)">
+                    <div id="quiz-questions" class="space-y-10">
+                        <!-- Questions injected here -->
+                    </div>
+                    <div class="mt-10 border-t pt-6 text-center">
+                        <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-3 px-10 rounded-full shadow-md text-lg w-full md:w-auto transition transform hover:scale-105">
+                            Kumpulkan Jawaban ✅
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Quiz Result -->
+            <div id="quiz-result" class="hidden bg-white p-6 md:p-10 rounded-3xl shadow-xl max-w-4xl mx-auto text-center border-t-8 border-teal-500">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2 brand-font">Hasil Kuis</h2>
+                <div class="flex justify-center items-center gap-4 my-6">
+                    <div class="text-7xl font-black text-teal-600" id="final-score">100</div>
+                    <div class="text-left text-slate-500 text-sm">
+                        Benar: <span id="final-correct" class="font-bold text-green-500">15</span><br>
+                        Salah: <span id="final-wrong" class="font-bold text-red-500">0</span>
+                    </div>
+                </div>
+                <p id="score-message" class="text-xl text-slate-700 font-medium mb-8"></p>
+                
+                <div class="text-left mt-8">
+                    <h3 class="font-bold text-xl mb-4 text-slate-800 border-b pb-2">Pembahasan:</h3>
+                    <div id="quiz-review" class="space-y-6 text-sm">
+                        <!-- Review injected here -->
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <button onclick="resetQuiz()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2 px-6 rounded-full shadow transition">
+                        🔄 Ulangi Kuis
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-teal-800 text-teal-100 py-6 text-center text-sm mt-auto">
+        <p>&copy; 2026 StatistikaKids - Media Interaktif Pembelajaran Matematika.</p>
+        <p class="mt-1 opacity-75">Dibuat menggunakan HTML5 Canvas, JavaScript, dan TailwindCSS.</p>
+    </footer>
+
+    <script>
+        // --- NAVIGATION LOGIC ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            
+            // Update nav buttons
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => {
+                btn.classList.remove('bg-teal-700');
+                if (btn.id === 'btn-' + tabId) {
+                    btn.classList.add('bg-teal-700');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- DATA PROCESSING & CALCULATIONS ---
+        const chartColors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316', '#64748b', '#0ea5e9'];
+
+        function processData() {
+            const inputStr = document.getElementById('dataInput').value;
+            const errorMsg = document.getElementById('error-msg');
+            const resultsSection = document.getElementById('results-section');
+
+            // Parse input: split by comma, trim, convert to number, filter invalid
+            const rawArr = inputStr.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
+
+            if (rawArr.length === 0) {
+                errorMsg.classList.remove('hidden');
+                resultsSection.classList.add('hidden');
+                return;
+            }
+
+            errorMsg.classList.add('hidden');
+            resultsSection.classList.remove('hidden');
+
+            const sortedArr = [...rawArr].sort((a, b) => a - b);
+            const n = sortedArr.length;
+
+            // 1. Calculations
+            // Mean
+            const sum = sortedArr.reduce((acc, val) => acc + val, 0);
+            const mean = sum / n;
+
+            // Median
+            let median;
+            let medianLogicStr = "";
+            if (n % 2 !== 0) {
+                const mid = Math.floor(n / 2);
+                median = sortedArr[mid];
+                medianLogicStr = `Karena ganjil, median adalah data ke-${mid + 1} yaitu ${median}.`;
+            } else {
+                const mid1 = n / 2 - 1;
+                const mid2 = n / 2;
+                median = (sortedArr[mid1] + sortedArr[mid2]) / 2;
+                medianLogicStr = `Karena genap, median adalah rata-rata data ke-${mid1+1} (${sortedArr[mid1]}) dan ke-${mid2+1} (${sortedArr[mid2]}). (${sortedArr[mid1]} + ${sortedArr[mid2]}) / 2 = ${median}.`;
+            }
+
+            // Frequency & Mode
+            const freqMap = {};
+            sortedArr.forEach(val => {
+                freqMap[val] = (freqMap[val] || 0) + 1;
+            });
+            
+            let maxFreq = 0;
+            for (const key in freqMap) {
+                if (freqMap[key] > maxFreq) maxFreq = freqMap[key];
+            }
+            
+            const modes = [];
+            for (const key in freqMap) {
+                if (freqMap[key] === maxFreq) modes.push(key);
+            }
+
+            let modusStr = "";
+            if (maxFreq === 1 && Object.keys(freqMap).length === n) {
+                modusStr = "Tidak ada";
+                document.getElementById('step-modus-result').innerText = "Tidak ada modus";
+                document.getElementById('step-modus-freq').innerText = "1";
+            } else {
+                modusStr = modes.join(', ');
+                document.getElementById('step-modus-result').innerText = modusStr;
+                document.getElementById('step-modus-freq').innerText = maxFreq;
+            }
+
+            // Update UI Stats
+            document.getElementById('res-mean').innerText = parseFloat(mean.toFixed(2));
+            document.getElementById('res-median').innerText = parseFloat(median.toFixed(2));
+            document.getElementById('res-modus').innerText = modusStr;
+
+            // Update Step-by-step
+            document.getElementById('step-data').innerText = rawArr.join(', ');
+            document.getElementById('step-sorted').innerText = sortedArr.join(', ');
+            document.getElementById('step-sum').innerText = sortedArr.join(' + ');
+            document.getElementById('step-count').innerText = n;
+            document.getElementById('step-mean-result').innerText = parseFloat(mean.toFixed(2));
+            document.getElementById('step-count2').innerText = n;
+            document.getElementById('step-parity').innerText = n % 2 !== 0 ? 'Ganjil' : 'Genap';
+            document.getElementById('step-median-logic').innerText = medianLogicStr;
+            document.getElementById('step-median-result').innerText = parseFloat(median.toFixed(2));
+
+            // Generate Table
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+            const uniqueLabels = Object.keys(freqMap).sort((a, b) => parseFloat(a) - parseFloat(b));
+            const frequencies = uniqueLabels.map(k => freqMap[k]);
+
+            uniqueLabels.forEach(val => {
+                const count = freqMap[val];
+                // Tally marks (simple logic for visual)
+                let tallyStr = "";
+                let temp = count;
+                while (temp >= 5) { tallyStr += "<s>||||</s> "; temp -= 5; }
+                for (let i=0; i<temp; i++) tallyStr += "|";
+                
+                const tr = document.createElement('tr');
+                tr.className = "bg-white border-b hover:bg-slate-50";
+                tr.innerHTML = `
+                    <td class="px-6 py-4 font-medium text-slate-900">${val}</td>
+                    <td class="px-6 py-4 font-bold tracking-widest text-teal-600">${tallyStr}</td>
+                    <td class="px-6 py-4">${count}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            document.getElementById('table-total').innerText = n;
+
+            // Draw Charts
+            drawBarChart('barChart', uniqueLabels, frequencies);
+            drawLineChart('lineChart', uniqueLabels, frequencies);
+            drawPieChart('pieChart', uniqueLabels, frequencies, n);
+        }
+
+        // --- CANVAS DRAWING FUNCTIONS ---
+
+        function drawBarChart(canvasId, labels, data) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const padding = 50;
+            const chartWidth = canvas.width - padding * 2;
+            const chartHeight = canvas.height - padding * 2;
+            
+            const maxData = Math.max(...data, 5); // Minimum scale 5
+            const barWidth = chartWidth / data.length - 20;
+
+            // Draw Axes
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.strokeStyle = "#cbd5e1";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw Bars
+            ctx.font = "14px Inter, sans-serif";
+            ctx.textAlign = "center";
+            for (let i = 0; i < data.length; i++) {
+                const barHeight = (data[i] / maxData) * chartHeight;
+                const x = padding + 10 + i * (chartWidth / data.length);
+                const y = canvas.height - padding - barHeight;
+
+                // Gradient
+                const gradient = ctx.createLinearGradient(x, y, x, y + barHeight);
+                gradient.addColorStop(0, chartColors[i % chartColors.length]);
+                gradient.addColorStop(1, '#0f172a22');
+                
+                ctx.fillStyle = gradient;
+                // Draw rounded rect manually or use standard fillRect
+                ctx.fillRect(x, y, barWidth, barHeight);
+                
+                // Border
+                ctx.strokeStyle = chartColors[i % chartColors.length];
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x, y, barWidth, barHeight);
+
+                // Label X
+                ctx.fillStyle = "#475569";
+                ctx.fillText(labels[i], x + barWidth / 2, canvas.height - padding + 20);
+
+                // Value Y
+                ctx.fillStyle = "#1e293b";
+                ctx.font = "bold 14px Inter";
+                ctx.fillText(data[i], x + barWidth / 2, y - 10);
+                ctx.font = "14px Inter";
+            }
+
+            // Draw Y-axis grid lines
+            ctx.textAlign = "right";
+            ctx.fillStyle = "#94a3b8";
+            for (let i = 0; i <= maxData; i++) {
+                if (maxData > 10 && i % Math.ceil(maxData/5) !== 0 && i !== maxData) continue;
+                const y = canvas.height - padding - (i / maxData) * chartHeight;
+                ctx.fillText(i, padding - 10, y + 5);
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(canvas.width - padding, y);
+                ctx.strokeStyle = "#f1f5f9";
+                ctx.stroke();
+            }
+        }
+
+        function drawLineChart(canvasId, labels, data) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const padding = 50;
+            const chartWidth = canvas.width - padding * 2;
+            const chartHeight = canvas.height - padding * 2;
+            const maxData = Math.max(...data, 5);
+            const spacingX = chartWidth / Math.max(data.length - 1, 1);
+
+            // Draw Axes
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.strokeStyle = "#cbd5e1";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Y-axis grid
+            ctx.font = "14px Inter, sans-serif";
+            ctx.textAlign = "right";
+            ctx.fillStyle = "#94a3b8";
+            for (let i = 0; i <= maxData; i++) {
+                if (maxData > 10 && i % Math.ceil(maxData/5) !== 0 && i !== maxData) continue;
+                const y = canvas.height - padding - (i / maxData) * chartHeight;
+                ctx.fillText(i, padding - 10, y + 5);
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(canvas.width - padding, y);
+                ctx.strokeStyle = "#f1f5f9";
+                ctx.stroke();
+            }
+
+            // Points coordinates
+            const points = [];
+            for (let i = 0; i < data.length; i++) {
+                const x = padding + i * spacingX;
+                const y = canvas.height - padding - (data[i] / maxData) * chartHeight;
+                points.push({x, y});
+                
+                // Label X
+                ctx.textAlign = "center";
+                ctx.fillText(labels[i], x, canvas.height - padding + 20);
+            }
+
+            // Draw Line
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            for(let i=1; i<points.length; i++) {
+                ctx.lineTo(points[i].x, points[i].y);
+            }
+            ctx.strokeStyle = "#0ea5e9"; // Light blue line
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            // Draw Points and Values
+            for(let i=0; i<points.length; i++) {
+                ctx.beginPath();
+                ctx.arc(points[i].x, points[i].y, 6, 0, Math.PI * 2);
+                ctx.fillStyle = "#ffffff";
+                ctx.fill();
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = "#0ea5e9";
+                ctx.stroke();
+                
+                // Value text
+                ctx.fillStyle = "#1e293b";
+                ctx.font = "bold 14px Inter";
+                ctx.fillText(data[i], points[i].x, points[i].y - 15);
+                ctx.font = "14px Inter";
+            }
+        }
+
+        function drawPieChart(canvasId, labels, data, total) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            const legendDiv = document.getElementById('pie-legend');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            legendDiv.innerHTML = '';
+
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const radius = Math.min(cx, cy) - 10;
+            let startAngle = 0;
+
+            for (let i = 0; i < data.length; i++) {
+                const fraction = data[i] / total;
+                const sliceAngle = fraction * 2 * Math.PI;
+                const color = chartColors[i % chartColors.length];
+
+                // Slice
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, radius, startAngle, startAngle + sliceAngle);
+                ctx.closePath();
+                ctx.fillStyle = color;
+                ctx.fill();
+                ctx.strokeStyle = "#fff";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Add to legend
+                const pct = Math.round(fraction * 100);
+                legendDiv.innerHTML += `
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 h-4 rounded-full inline-block" style="background-color: ${color}"></span>
+                        <span class="font-medium">Data ${labels[i]}</span> 
+                        <span class="text-slate-500">(${data[i]}) - ${pct}%</span>
+                    </div>
+                `;
+
+                startAngle += sliceAngle;
+            }
+        }
+
+        // --- QUIZ DATA & LOGIC ---
+        const quizData = [
+            {
+                q: "Apa yang dimaksud dengan data dalam matematika?",
+                options: ["Kumpulan angka acak", "Sekumpulan informasi atau keterangan yang diperoleh dari pengamatan", "Alat untuk menghitung rata-rata", "Diagram batang"],
+                a: 1,
+                review: "Data adalah kumpulan keterangan atau informasi, baik berupa angka maupun bukan angka, yang dikumpulkan untuk tujuan tertentu."
+            },
+            {
+                q: "Metode manakah yang TIDAK biasa digunakan untuk mengumpulkan data?",
+                options: ["Wawancara langsung", "Menyebarkan kuesioner", "Mengarang bebas", "Observasi atau pengamatan"],
+                a: 2,
+                review: "Data harus berdasarkan fakta. Mengarang bebas tidak menghasilkan data yang valid secara statistik."
+            },
+            {
+                q: "Apa fungsi utama dari tabel frekuensi?",
+                options: ["Menghitung luas bangun datar", "Mengelompokkan data agar mudah dibaca dan dihitung jumlah tiap kategorinya", "Menghapus data yang salah", "Menggambar garis melengkung"],
+                a: 1,
+                review: "Tabel frekuensi membantu meringkas data mentah dengan mengelompokkannya beserta jumlah (frekuensi) masing-masing."
+            },
+            {
+                q: "Diagram yang menyajikan data dalam bentuk persegi panjang adalah...",
+                options: ["Diagram Lingkaran", "Diagram Garis", "Diagram Batang", "Tabel"],
+                a: 2,
+                review: "Diagram batang menggunakan persegi panjang tegak atau mendatar untuk mewakili frekuensi data."
+            },
+            {
+                q: "Untuk melihat perkembangan suhu badan pasien dari hari ke hari, diagram manakah yang paling cocok?",
+                options: ["Diagram Lingkaran", "Diagram Batang", "Diagram Garis", "Diagram Venn"],
+                a: 2,
+                review: "Diagram garis sangat tepat untuk menunjukkan perubahan suatu data secara berkesinambungan (seiring waktu)."
+            },
+            {
+                q: "Diagram lingkaran sangat tepat digunakan apabila kita ingin melihat...",
+                options: ["Nilai persentase bagian terhadap keseluruhan", "Perubahan data setiap jam", "Nilai tertinggi saja", "Nilai terendah saja"],
+                a: 0,
+                review: "Diagram lingkaran menunjukkan porsi atau proporsi relatif suatu bagian terhadap seluruh data dalam bentuk persen atau derajat."
+            },
+            {
+                q: "Diketahui data nilai matematika: 7, 8, 9, 8. Berapakah Mean (rata-rata) data tersebut?",
+                options: ["7.5", "8", "8.5", "32"],
+                a: 1,
+                review: "Mean = Jumlah / Banyak data = (7+8+9+8) / 4 = 32 / 4 = 8."
+            },
+            {
+                q: "Tentukan Median (nilai tengah) dari data berikut: 4, 6, 2, 8, 9",
+                options: ["6", "2", "8", "4"],
+                a: 0,
+                review: "Urutkan dulu: 2, 4, 6, 8, 9. Nilai di tengah (data ke-3) adalah 6."
+            },
+            {
+                q: "Tentukan Median dari data berikut: 10, 20, 30, 40",
+                options: ["20", "30", "25", "20 dan 30"],
+                a: 2,
+                review: "Data genap. Median = rata-rata 2 nilai tengah = (20 + 30) / 2 = 50 / 2 = 25."
+            },
+            {
+                q: "Apa itu Modus dalam statistika?",
+                options: ["Nilai yang paling tengah", "Rata-rata data", "Selisih nilai terbesar dan terkecil", "Nilai data yang paling sering muncul"],
+                a: 3,
+                review: "Modus adalah datum yang memiliki frekuensi paling tinggi atau paling sering muncul."
+            },
+            {
+                q: "Berapa modus dari data berat badan (kg) berikut: 40, 42, 40, 45, 42, 40",
+                options: ["42", "45", "40", "41"],
+                a: 2,
+                review: "Angka 40 muncul sebanyak 3 kali (terbanyak), maka modusnya adalah 40."
+            },
+            {
+                q: "Perhatikan data: 5, 5, 6, 6, 7, 8. Manakah pernyataan yang benar?",
+                options: ["Modusnya 5", "Modusnya 6", "Modusnya 5 dan 6", "Tidak ada modus"],
+                a: 2,
+                review: "Angka 5 muncul 2 kali dan 6 muncul 2 kali. Karena keduanya muncul terbanyak yang sama, data ini memiliki dua modus (5 dan 6)."
+            },
+            {
+                q: "Jika rata-rata nilai 5 orang siswa adalah 80, berapakah jumlah seluruh nilai mereka?",
+                options: ["400", "85", "16", "800"],
+                a: 0,
+                review: "Rata-rata = Jumlah / Banyak. Maka Jumlah = Rata-rata × Banyak = 80 × 5 = 400."
+            },
+            {
+                q: "Sebuah dadu dilempar 10 kali. Muncul angka: 1, 2, 2, 3, 4, 5, 6, 6, 6, 6. Berapa frekuensi munculnya angka genap (2, 4, 6)?",
+                options: ["4", "5", "6", "7"],
+                a: 3,
+                review: "Angka genap yang muncul: 2 (2 kali), 4 (1 kali), 6 (4 kali). Total = 2 + 1 + 4 = 7."
+            },
+            {
+                q: "Jika kita ingin menambahkan satu siswa dengan nilai 90 ke dalam kelompok 4 siswa yang nilai rata-ratanya 80, maka rata-rata nilai kelompok yang baru menjadi...",
+                options: ["82", "85", "90", "80"],
+                a: 0,
+                review: "Jumlah awal = 4 × 80 = 320. Tambah 90 = 410. Siswa jadi 5. Rata-rata baru = 410 / 5 = 82."
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-questions');
+            container.innerHTML = '';
+            quizData.forEach((item, index) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = "bg-slate-50 p-6 rounded-2xl border border-slate-200";
+                
+                let optionsHTML = '';
+                item.options.forEach((opt, oIndex) => {
+                    optionsHTML += `
+                        <label class="flex items-center p-3 rounded-lg border border-slate-200 bg-white cursor-pointer hover:bg-teal-50 transition mb-2">
+                            <input type="radio" name="q${index}" value="${oIndex}" class="w-5 h-5 text-teal-600 focus:ring-teal-500 border-gray-300" required>
+                            <span class="ml-3 text-slate-700">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                qDiv.innerHTML = `
+                    <p class="font-bold text-lg text-slate-800 mb-4">${index + 1}. ${item.q}</p>
+                    <div class="space-y-2">
+                        ${optionsHTML}
+                    </div>
+                `;
+                container.appendChild(qDiv);
+            });
+        }
+
+        function startQuiz() {
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            renderQuiz();
+        }
+
+        function submitQuiz(e) {
+            e.preventDefault();
+            let score = 0;
+            const reviewContainer = document.getElementById('quiz-review');
+            reviewContainer.innerHTML = '';
+
+            const formData = new FormData(document.getElementById('quiz-form'));
+            
+            quizData.forEach((item, index) => {
+                const userAnswer = parseInt(formData.get(`q${index}`));
+                const isCorrect = userAnswer === item.a;
+                if (isCorrect) score++;
+
+                const statusColor = isCorrect ? "text-green-600 bg-green-50 border-green-200" : "text-red-600 bg-red-50 border-red-200";
+                const icon = isCorrect ? "✅ Benar" : "❌ Salah";
+                
+                reviewContainer.innerHTML += `
+                    <div class="p-4 rounded-xl border ${statusColor} mb-4">
+                        <p class="font-bold mb-1">${index + 1}. ${item.q}</p>
+                        <p class="mb-2"><strong>Jawabanmu:</strong> ${isNaN(userAnswer) ? '-' : item.options[userAnswer]} <span class="font-bold ml-2">${icon}</span></p>
+                        ${!isCorrect ? `<p class="mb-2"><strong>Jawaban Benar:</strong> ${item.options[item.a]}</p>` : ''}
+                        <p class="text-xs mt-2 bg-white/60 p-2 rounded-md italic"><strong>Pembahasan:</strong> ${item.review}</p>
+                    </div>
+                `;
+            });
+
+            const finalScore = Math.round((score / quizData.length) * 100);
+            
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            
+            document.getElementById('final-score').innerText = finalScore;
+            document.getElementById('final-correct').innerText = score;
+            document.getElementById('final-wrong').innerText = quizData.length - score;
+
+            let msg = "";
+            if (finalScore >= 90) msg = "Luar Biasa! Kamu sangat menguasai materi ini! 🌟";
+            else if (finalScore >= 70) msg = "Bagus Sekali! Tingkatkan sedikit lagi ya! 👍";
+            else msg = "Jangan menyerah! Coba baca lagi materi dan ulangi kuisnya. 💪";
+            
+            document.getElementById('score-message').innerText = msg;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-intro').classList.remove('hidden');
+            document.getElementById('quiz-form').reset();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Init
+        window.onload = function() {
+            processData(); // Run initial simulation based on default value
+        };
+
+    </script>
+</body>
+</html>
